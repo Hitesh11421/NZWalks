@@ -6,7 +6,7 @@ namespace NZWalks.API.Profiles
     {
         public WalksProfile()
         {
-            CreateMap<Models.Domain.Walk, Models.DTO.WalkDifficulty>().ReverseMap();
+            CreateMap<Models.Domain.Walk, Models.DTO.Walk>().ReverseMap();
             CreateMap<Models.Domain.WalkDifficulty,Models.DTO.WalkDifficulty>().ReverseMap();
         }
     }
