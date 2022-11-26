@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Models.Domain;
+using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controllers
@@ -56,6 +57,14 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult>AddRegionAsync(Models.DTO.AddRegionRequest addRegionRequest)
         {
+            // first validate addRegionRequest Model and check if it is correct or not
+            //validate the request
+            if (!ValidateAddRegionAsync(addRegionRequest))
+            {
+                return BadRequest(ModelState);
+            }
+
+
             //request(DTO) into domain model
             var region = new Models.Domain.Region()
             {
@@ -111,6 +120,11 @@ namespace NZWalks.API.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdateRegionAsync([FromRoute]Guid id, [FromBody]Models.DTO.UpdateRegionRequest updateRegionRequest)
         {
+            //validate incoming request
+            if(!ValidateUpdateRegionAsync(updateRegionRequest))
+            {
+                return BadRequest(ModelState);
+            }
             //convert DTO to Domain Model
             var region = new Models.Domain.Region
             {
@@ -143,5 +157,86 @@ namespace NZWalks.API.Controllers
             //return ok response
             return Ok(regionDTO);
         }
+        #region Private methods
+        private bool ValidateAddRegionAsync(Models.DTO.AddRegionRequest addRegionRequest)
+        {
+            if (addRegionRequest == null)
+            {
+                ModelState.AddModelError(nameof(addRegionRequest), $"Add region data is required.");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(addRegionRequest.Code))
+            {
+                //i want to tell client what went wrong in the request
+                //so I use ModelState attribute provided by ASP.Net core.
+                ModelState.AddModelError(nameof(addRegionRequest.Code), $"{nameof(addRegionRequest.Code)} cannot be Null or empty or White spaces. ");
+                //client will get indication of what went wrong in the request why we got 400 bad request.
+
+            }
+            if (string.IsNullOrWhiteSpace(addRegionRequest.Name))
+            {
+                //i want to tell client what went wrong in the request
+                //so I use ModelState attribute provided by ASP.Net core.
+                ModelState.AddModelError(nameof(addRegionRequest.Name), $"{nameof(addRegionRequest.Name)} cannot be Null or empty or White spaces. ");
+                //client will get indication of what went wrong in the request why we got 400 bad request.
+
+            }
+            if (addRegionRequest.Area <= 0)
+            {
+                ModelState.AddModelError(nameof(addRegionRequest.Area), $"{nameof(addRegionRequest.Area)} cannot be lessthan or equal to zero. ");
+            }
+
+           
+            if (addRegionRequest.Population < 0)
+            {
+                ModelState.AddModelError(nameof(addRegionRequest.Population), $"{nameof(addRegionRequest.Population)} cannot be lessthan  zero. ");
+            }
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool ValidateUpdateRegionAsync(Models.DTO.UpdateRegionRequest updateRegionRequest)
+        {
+            if (updateRegionRequest == null)
+            {
+                ModelState.AddModelError(nameof(updateRegionRequest), $"Update region data is required.");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(updateRegionRequest.Code))
+            {
+                //i want to tell client what went wrong in the request
+                //so I use ModelState attribute provided by ASP.Net core.
+                ModelState.AddModelError(nameof(updateRegionRequest.Code), $"{nameof(updateRegionRequest.Code)} cannot be Null or empty or White spaces. ");
+                //client will get indication of what went wrong in the request why we got 400 bad request.
+
+            }
+            if (string.IsNullOrWhiteSpace(updateRegionRequest.Name))
+            {
+                //i want to tell client what went wrong in the request
+                //so I use ModelState attribute provided by ASP.Net core.
+                ModelState.AddModelError(nameof(updateRegionRequest.Name), $"{nameof(updateRegionRequest.Name)} cannot be Null or empty or White spaces. ");
+                //client will get indication of what went wrong in the request why we got 400 bad request.
+
+            }
+            if (updateRegionRequest.Area <= 0)
+            {
+                ModelState.AddModelError(nameof(updateRegionRequest.Area), $"{nameof(updateRegionRequest.Area)} cannot be lessthan or equal to zero. ");
+            }
+
+
+            if (updateRegionRequest.Population < 0)
+            {
+                ModelState.AddModelError(nameof(updateRegionRequest.Population), $"{nameof(updateRegionRequest.Population)} cannot be lessthan  zero. ");
+            }
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+            #endregion
     }
 }
