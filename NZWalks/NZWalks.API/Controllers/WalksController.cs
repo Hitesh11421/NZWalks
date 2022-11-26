@@ -127,23 +127,23 @@ namespace NZWalks.API.Controllers
         #region Private methods
         private async Task<bool> ValidateAddWalkAsync(Models.DTO.AddWalkRequest addWalkRequest)
         {
-            if (addWalkRequest == null)
-            {
-                ModelState.AddModelError(nameof(addWalkRequest), $"Add Walk data is required.");
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(addWalkRequest.Name))
-            {
-                //i want to tell client what went wrong in the request
-                //so I use ModelState attribute provided by ASP.Net core.
-                ModelState.AddModelError(nameof(addWalkRequest.Name), $"{nameof(addWalkRequest.Name)} cannot be Null or empty or White spaces. ");
-                //client will get indication of what went wrong in the request why we got 400 bad request.
+            //if (addWalkRequest == null)
+            //{
+            //    ModelState.AddModelError(nameof(addWalkRequest), $"Add Walk data is required.");
+            //    return false;
+            //}
+            //if (string.IsNullOrWhiteSpace(addWalkRequest.Name))
+            //{
+            //    //i want to tell client what went wrong in the request
+            //    //so I use ModelState attribute provided by ASP.Net core.
+            //    ModelState.AddModelError(nameof(addWalkRequest.Name), $"{nameof(addWalkRequest.Name)} cannot be Null or empty or White spaces. ");
+            //    //client will get indication of what went wrong in the request why we got 400 bad request.
 
-            }
-            if (addWalkRequest.Length <= 0)
-            {
-                ModelState.AddModelError(nameof(addWalkRequest.Length), $"{nameof(addWalkRequest.Length)} cannot be lessthan or equal to zero. ");
-            }
+            //}
+            //if (addWalkRequest.Length <= 0)
+            //{
+            //    ModelState.AddModelError(nameof(addWalkRequest.Length), $"{nameof(addWalkRequest.Length)} cannot be lessthan or equal to zero. ");
+            //}
           var region = await regionRepository.GetAsync(addWalkRequest.RegionId);
             if (region == null)
             {
@@ -164,23 +164,23 @@ namespace NZWalks.API.Controllers
         }
         private async Task<bool> ValidateUpdateWalkAsync(Models.DTO.UpdateWalkRequest updateWalkRequest)
         {
-            if (updateWalkRequest == null)
-            {
-                ModelState.AddModelError(nameof(updateWalkRequest), $"Add Walk data is required.");
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(updateWalkRequest.Name))
-            {
-                //i want to tell client what went wrong in the request
-                //so I use ModelState attribute provided by ASP.Net core.
-                ModelState.AddModelError(nameof(updateWalkRequest.Name), $"{nameof(updateWalkRequest.Name)} cannot be Null or empty or White spaces. ");
-                //client will get indication of what went wrong in the request why we got 400 bad request.
+            //if (updateWalkRequest == null)
+            //{
+            //    ModelState.AddModelError(nameof(updateWalkRequest), $"Add Walk data is required.");
+            //    return false;
+            //}
+            //if (string.IsNullOrWhiteSpace(updateWalkRequest.Name))
+            //{
+            //    //i want to tell client what went wrong in the request
+            //    //so I use ModelState attribute provided by ASP.Net core.
+            //    ModelState.AddModelError(nameof(updateWalkRequest.Name), $"{nameof(updateWalkRequest.Name)} cannot be Null or empty or White spaces. ");
+            //    //client will get indication of what went wrong in the request why we got 400 bad request.
 
-            }
-            if (updateWalkRequest.Length <= 0)
-            {
-                ModelState.AddModelError(nameof(updateWalkRequest.Length), $"{nameof(updateWalkRequest.Length)} cannot be lessthan or equal to zero. ");
-            }
+            //}
+            //if (updateWalkRequest.Length <= 0)
+            //{
+            //    ModelState.AddModelError(nameof(updateWalkRequest.Length), $"{nameof(updateWalkRequest.Length)} cannot be lessthan or equal to zero. ");
+            //}
             var region = await regionRepository.GetAsync(updateWalkRequest.RegionId);
             if (region == null)
             {
