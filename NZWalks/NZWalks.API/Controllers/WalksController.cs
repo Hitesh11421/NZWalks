@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
+using System.Data;
 
 namespace NZWalks.API.Controllers
 {
@@ -23,7 +25,8 @@ namespace NZWalks.API.Controllers
             this.walkDifficultyRepository = walkDifficultyRepository;
         }
         [HttpGet]
-       public async Task<IActionResult> GetAllWalksAsync() {
+        [Authorize(Roles = "reader")]
+        public async Task<IActionResult> GetAllWalksAsync() {
             //fetch data from data base(and this is domain walks)
             var walksDomain= await walkRepository.GetAllAsync();
             //convert domain walks to DTO walks
@@ -35,6 +38,7 @@ namespace NZWalks.API.Controllers
         [HttpGet]
         [Route("{id:guid}")]
         [ActionName("GetWalkAsync")]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult>GetWalkAsync(Guid id)
         {
             //get walk domain object from database
@@ -45,6 +49,7 @@ namespace NZWalks.API.Controllers
             return Ok(walkDTO);
         }
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddWalkAsync([FromBody]Models.DTO.AddWalkRequest addWalkRequest)
         {
             //validate the incoming request
@@ -76,6 +81,7 @@ namespace NZWalks.API.Controllers
         }
         [HttpPut]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateWalkAsync([FromRoute] Guid id, [FromBody] Models.DTO.UpdateWalkRequest updateWalkRequest)
         {
            //validate incoming request
@@ -112,6 +118,7 @@ namespace NZWalks.API.Controllers
         }
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult>DeleteWalkAsync(Guid id)
         {
             //call repository to delete walk
@@ -167,7 +174,7 @@ namespace NZWalks.API.Controllers
             //if (updateWalkRequest == null)
             //{
             //    ModelState.AddModelError(nameof(updateWalkRequest), $"Add Walk data is required.");
-            //    return false;
+            //    return false; 
             //}
             //if (string.IsNullOrWhiteSpace(updateWalkRequest.Name))
             //{
